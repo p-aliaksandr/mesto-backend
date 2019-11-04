@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Mesto</title>
+  <link rel="stylesheet" href="index.f323073ba1396661d699.css?6ff55f7e16a153b64d34">
+</head>
+<body>
+  <div class="root">
+    <header class="header root__section">
+      <img src="./images/logo.svg" alt="mesto logo" class="logo">
+    </header>
+    <div class="profile root__section">
+      <div class="user-info">
+        <div class="user-info__photo"></div>
+        <div class="user-info__data">
+          <h1 class="user-info__name"></h1>
+          <p class="user-info__job"></p>
+          <button class="user-info__edit-button">Edit</button>
+        </div>
+        <button class="button user-info__button">+</button>
+      </div>
+    </div>
+    <div class="places-list root__section">
+    </div>
+    <div class="popup popup-plus">
+      <div class="popup__content">
+        <img src="./images/close.svg" alt="" class="popup__close">
+        <h3 class="popup__title">Новое место</h3>
+        <form class="popup__form" name="new">
+            <input type="text" name="namePlus" required minlength="2" maxlength="30" class="popup__input popup__input_type_name" placeholder="Название">
+            <span class="popup__error popup__error_name"></span>
+            <input type="url" name="link" class="popup__input popup__input_type_link-url" placeholder="Ссылка на картинку">
+            <span class="popup__error popup__error_link"></span>
+            <button type class="button popup__button popup__button_plus">+</button>
+        </form>
+      </div>
+    </div>
+    <div class="popup popup-edit">
+      <div class="popup__content">
+        <img src="./images/close.svg" alt="" class="popup__close">
+        <h3 class="popup__title">Редактировать профиль</h3>
+        <form class="popup__form" name="editProfile">
+            <input type="text" name="name" required minlength="2" maxlength="30" class="popup__input popup__input_type_name-edit" placeholder="Имя">
+            <span class="popup__error popup__error_name-edit"></span>
+            <input type="text" name="job" required minlength="2" maxlength="30" class="popup__input popup__input_type_job" placeholder="О себе">
+            <span class="popup__error popup__error_job"></span>
+            <button type class="button popup__button popup__button_edit">Сохранить</button>
+        </form>
+      </div>
+    </div>
+    <div class="popup popup-avatar">
+      <div class="popup__content">
+        <img src="./images/close.svg" alt="" class="popup__close">
+        <h3 class="popup__title">Обновить аватар</h3>
+        <form class="popup__form" name="formAvatar">
+            <input type="url" name="linkAvatar" class="popup__input popup__input_type_link-avatar" placeholder="Ссылка на аватар">
+            <span class="popup__error popup__error_link-avatar"></span>
+            <button type class="button popup__button popup__button_avatar">Сохранить</button>
+        </form>
+      </div>
+    </div>
+    <div class="popup popup-loader">
+      <img src="./images/oval.svg" alt="" class="popup__content popup__content_img-loader">
+    </div>
+    <div class="popup popup-image">
+      <div class="popup__content popup__content_img">
+        <img src="./images/close.svg" alt="" class="popup__close popup__close_image">
+      </div>
+    </div>
+  </div>
+  <script src='main.7ff5057e93018bff0588.js?6ff55f7e16a153b64d34'></script> </script>
+</body>
+</html>
