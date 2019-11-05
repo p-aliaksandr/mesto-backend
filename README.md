@@ -1,4 +1,4 @@
-# Mesto Backend v0.0.1
+# Mesto Backend v0.0.2
 
 - Серверная часть для проекта Mesto
 
