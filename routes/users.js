@@ -15,7 +15,7 @@ routerUsers.get('/users/:id', (req, res) => {
   });
     return;
   }
-  res.status(200).send(`Пользователь: ${result}`);
+  res.status(200).send(result);
 });
 
 module.exports = routerUsers;
