@@ -26,4 +26,9 @@ app.use((req, res, next) => {
 app.use('/', require('./routes/users'));
 app.use('/', require('./routes/cards'));
 
+app.use('*', (req, res) => {
+  res.set('Content-Type', 'application/json');
+  res.send('{ "message": "Запрашиваемый ресурс не найден" }', 404);
+});
+
 app.listen(PORT);
