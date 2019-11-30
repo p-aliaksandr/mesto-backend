@@ -15,15 +15,20 @@ module.exports.createCard = (req, res) => {
 };
 
 module.exports.deleteCard = (req, res) => {
-  Card.findByIdAndRemove(req.params.cardId)
-    .then((card) => res.send({ data: card }))
-    .catch((err) => {
-      if (err.message) {
-        res.status(404).send(`Нет карточки с таким id: ${req.params.cardId}`);
-        return;
+  const { _id } = req.user;
+  const { cardId } = req.params;
+  Card.findOne({ _id: cardId })
+  // eslint-disable-next-line consistent-return
+    .then((card) => {
+      if (card === _id) {
+        Card.findByIdAndRemove(cardId)
+          .then((data) => res.send(data))
+          .catch((err) => res.status(404).send({ message: err.message }));
+      } else {
+        return Promise.reject(new Error('Можно удалять только свои карточки'));
       }
-      res.status(500).send({ message: err.message });
-    });
+    })
+    .catch((err) => res.status(500).send({ message: err.message }));
 };
 
 module.exports.likeCard = (req, res) => Card.findByIdAndUpdate(
