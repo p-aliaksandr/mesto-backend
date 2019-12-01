@@ -20,7 +20,7 @@ module.exports.deleteCard = (req, res) => {
   Card.findOne({ _id: cardId })
   // eslint-disable-next-line consistent-return
     .then((card) => {
-      if (card === _id) {
+      if (card._id === _id) {
         Card.findByIdAndRemove(cardId)
           .then((data) => res.send(data))
           .catch((err) => res.status(404).send({ message: err.message }));

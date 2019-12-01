@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const key = require('../keys');
 
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
@@ -13,7 +14,7 @@ module.exports = (req, res, next) => {
   let payload;
 
   try {
-    payload = jwt.verify(token, '58c77a15f4e764adb9429f3e30a25ad56c492f8505f66422abbf5e360c219269');
+    payload = jwt.verify(token, key);
   } catch (err) {
     return res
       .status(401)

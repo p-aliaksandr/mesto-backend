@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user.js');
+const key = require('../keys');
 
 module.exports.getUsers = (req, res) => {
   User.find({})
@@ -64,13 +65,13 @@ module.exports.login = (req, res) => {
 
       return bcrypt.compare(password, user.password);
     })
-    .then((user) => {
-      if (!user) {
+    .then((matched) => {
+      if (!matched) {
         return Promise.reject(new Error('Неправильные почта или пароль'));
       }
       const token = jwt.sign(
-        { _id: user._id },
-        '58c77a15f4e764adb9429f3e30a25ad56c492f8505f66422abbf5e360c219269',
+        { _id: matched._id },
+        key,
         { expiresIn: '7d' },
       );
       return res.cookie('jwt', token, {
