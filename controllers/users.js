@@ -69,8 +69,9 @@ module.exports.login = (req, res) => {
       if (!matched) {
         return Promise.reject(new Error('Неправильные почта или пароль'));
       }
+      const { user } = req.body;
       const token = jwt.sign(
-        { _id: matched._id },
+        { _id: user._id },
         key,
         { expiresIn: '7d' },
       );

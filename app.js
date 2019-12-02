@@ -22,8 +22,8 @@ const limiter = rateLimit({
   max: 100,
 });
 
-app.use('/', auth, bodyParser.json());
-app.use('/', auth, bodyParser.urlencoded({ extended: true }));
+app.use('/users', auth, bodyParser.json());
+app.use('/cards', auth, bodyParser.urlencoded({ extended: true }));
 app.use('/', require('./routes/users'));
 app.use('/', require('./routes/cards'));
 
