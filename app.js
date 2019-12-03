@@ -29,7 +29,6 @@ app.use('/cards', auth, require('./routes/cards'));
 
 app.post('/signin', login);
 app.post('/signup', createUser);
-app.use('/', auth, createUser);
 app.use(helmet());
 app.use(limiter);
 app.use('*', (req, res) => {
