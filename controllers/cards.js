@@ -22,13 +22,14 @@ module.exports.deleteCard = (req, res) => {
     .then((card) => {
       if (!card) {
         res.status(404).send('Карточка с таким id не найдена');
+        return;
       }
-      if (String(card._id) === _id) {
+      if (String(card.owner) === _id) {
         Card.findByIdAndRemove(cardId)
           .then((data) => res.send(data))
           .catch((err) => res.status(500).send({ message: err.message }));
       } else {
-        return Promise.reject(new Error('Можно удалять только свои карточки'));
+        Promise.reject(new Error('Можно удалять только свои карточки'));
       }
     })
     .catch((err) => res.status(500).send({ message: err.message }));

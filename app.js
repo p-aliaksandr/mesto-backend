@@ -22,15 +22,15 @@ const limiter = rateLimit({
   max: 100,
 });
 
+app.post('/signin', login);
+app.post('/signup', createUser);
+app.use(helmet());
+app.use(limiter);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/users', auth, require('./routes/users'));
 app.use('/cards', auth, require('./routes/cards'));
 
-app.post('/signin', login);
-app.post('/signup', createUser);
-app.use(helmet());
-app.use(limiter);
 app.use('*', (req, res) => {
   res.set('Content-Type', 'application/json');
   res.status(404).send('{ "message": "Запрашиваемый ресурс не найден" }');
