@@ -14,24 +14,50 @@ module.exports.createCard = (req, res) => {
     .catch((err) => res.status(404).send({ message: err.message }));
 };
 
-module.exports.deleteCard = (req, res) => {
+// module.exports.deleteCard = (req, res) => {
+//   const { _id } = req.user;
+//   const { cardId } = req.params;
+//   Card.findOne({ _id: cardId })
+//     .then((card) => {
+//       if (!card) {
+//         res.status(404).send('Карточка с таким id не найдена');
+//         return;
+//       }
+//       if (String(card.owner) === _id) {
+//         Card.findByIdAndRemove(cardId)
+//           .then((data) => res.send(data))
+//           .catch((err) => res.status(500).send({ message: err.message }));
+//       } else {
+//         return Promise.reject(new Error('Можно удалять только свои карточки'));
+//       }
+//     })
+//     .catch((err) => res.status(500).send({ message: err.message }));
+// };
+
+module.exports.deleteCard = async (req, res) => {
   const { _id } = req.user;
   const { cardId } = req.params;
-  Card.findOne({ _id: cardId })
-    .then((card) => {
-      if (!card) {
-        res.status(404).send('Карточка с таким id не найдена');
-        return;
-      }
-      if (String(card.owner) !== _id) {
-        Card.findByIdAndRemove(cardId)
-        return Promise.reject(new Error('Можно удалять только свои карточки'));
-      } else {
-          .then((data) => res.send(data))
-          .catch((err) => res.status(500).send({ message: err.message }));
-      }
-    })
-    .catch((err) => res.status(500).send({ message: err.message }));
+  let card;
+  try {
+    card = await Card.findOne({ _id: cardId });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+  if (!card) {
+    res.status(404).send('Карточка с таким id не найдена');
+    return;
+  }
+  if (String(card.owner) === _id) {
+    let deletedCard;
+    try {
+      deletedCard = await Card.findByIdAndRemove(cardId);
+      res.send(deletedCard);
+    } catch (err) {
+      res.status(500).send({ message: err.message });
+    }
+  } else {
+    res.status(403).send('Можно удалять только свои карточки');
+  }
 };
 
 module.exports.likeCard = (req, res) => Card.findByIdAndUpdate(
