@@ -42,6 +42,7 @@ module.exports.deleteCard = async (req, res) => {
     card = await Card.findOne({ _id: cardId });
   } catch (err) {
     res.status(500).send({ message: err.message });
+    return;
   }
   if (!card) {
     res.status(404).send('Карточка с таким id не найдена');
