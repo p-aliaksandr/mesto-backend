@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user.js');
-const key = require('../keys');
+const { key } = require('../keys');
 
 module.exports.getUsers = (req, res) => {
   User.find({})
@@ -36,7 +36,13 @@ module.exports.createUser = (req, res) => {
     .then((hash) => User.create({
       name, about, avatar, email, password: hash,
     }))
-    .then((user) => res.status(200).send({ data: user }))
+    .then((user) => res.status(201).send({
+      _id: user._id,
+      name: user.name,
+      about: user.about,
+      avatar: user.avatar,
+      email: user.email,
+    }))
     .catch((err) => res.status(404).send({ message: err.message }));
 };
 
@@ -77,6 +83,7 @@ module.exports.login = (req, res) => {
             httpOnly: true,
             sameSite: true,
           })
+            .send({ message: 'Успешная авторизация!' })
             .end();
         });
     })

@@ -31,8 +31,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.path('avatar').validate(validator.isURL, 'Invalid Link');
 userSchema.path('email').validate(validator.isEmail, 'Invalid Email');
-
 
 module.exports = mongoose.model('user', userSchema);

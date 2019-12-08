@@ -14,26 +14,6 @@ module.exports.createCard = (req, res) => {
     .catch((err) => res.status(404).send({ message: err.message }));
 };
 
-// module.exports.deleteCard = (req, res) => {
-//   const { _id } = req.user;
-//   const { cardId } = req.params;
-//   Card.findOne({ _id: cardId })
-//     .then((card) => {
-//       if (!card) {
-//         res.status(404).send('Карточка с таким id не найдена');
-//         return;
-//       }
-//       if (String(card.owner) === _id) {
-//         Card.findByIdAndRemove(cardId)
-//           .then((data) => res.send(data))
-//           .catch((err) => res.status(500).send({ message: err.message }));
-//       } else {
-//         return Promise.reject(new Error('Можно удалять только свои карточки'));
-//       }
-//     })
-//     .catch((err) => res.status(500).send({ message: err.message }));
-// };
-
 module.exports.deleteCard = async (req, res) => {
   const { _id } = req.user;
   const { cardId } = req.params;
