@@ -1,4 +1,7 @@
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 const User = require('../models/user.js');
+const { key } = require('../keys');
 
 module.exports.getUsers = (req, res) => {
   User.find({})
@@ -25,10 +28,21 @@ module.exports.getUserId = (req, res) => {
 };
 
 module.exports.createUser = (req, res) => {
-  const { name, about, avatar } = req.body;
+  const {
+    name, about, avatar, email, password,
+  } = req.body;
 
-  User.create({ name, about, avatar })
-    .then((user) => res.send({ data: user }))
+  bcrypt.hash(password, 10)
+    .then((hash) => User.create({
+      name, about, avatar, email, password: hash,
+    }))
+    .then((user) => res.status(201).send({
+      _id: user._id,
+      name: user.name,
+      about: user.about,
+      avatar: user.avatar,
+      email: user.email,
+    }))
     .catch((err) => res.status(404).send({ message: err.message }));
 };
 
@@ -44,4 +58,36 @@ module.exports.updateAvatar = (req, res) => {
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .then((user) => res.send({ data: user }))
     .catch((err) => res.status(404).send({ message: err.message }));
+};
+
+module.exports.login = (req, res) => {
+  const { email, password } = req.body;
+
+  User.findOne({ email }).select('+password')
+    .then((user) => {
+      if (!user) {
+        return Promise.reject(new Error('Неправильные почта или пароль'));
+      }
+      return bcrypt.compare(password, user.password)
+        .then((matched) => {
+          if (!matched) {
+            return Promise.reject(new Error('Неправильные почта или пароль'));
+          }
+          const token = jwt.sign(
+            { _id: user._id },
+            key,
+            { expiresIn: '7d' },
+          );
+          return res.cookie('jwt', token, {
+            maxAge: 604800000,
+            httpOnly: true,
+            sameSite: true,
+          })
+            .send({ message: 'Успешная авторизация!' })
+            .end();
+        });
+    })
+    .catch((err) => {
+      res.status(401).send({ message: err.message });
+    });
 };

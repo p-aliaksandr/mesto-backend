@@ -14,16 +14,31 @@ module.exports.createCard = (req, res) => {
     .catch((err) => res.status(404).send({ message: err.message }));
 };
 
-module.exports.deleteCard = (req, res) => {
-  Card.findByIdAndRemove(req.params.cardId)
-    .then((card) => res.send({ data: card }))
-    .catch((err) => {
-      if (err.message) {
-        res.status(404).send(`Нет карточки с таким id: ${req.params.cardId}`);
-        return;
-      }
+module.exports.deleteCard = async (req, res) => {
+  const { _id } = req.user;
+  const { cardId } = req.params;
+  let card;
+  try {
+    card = await Card.findOne({ _id: cardId });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+    return;
+  }
+  if (!card) {
+    res.status(404).send('Карточка с таким id не найдена');
+    return;
+  }
+  if (String(card.owner) === _id) {
+    let deletedCard;
+    try {
+      deletedCard = await Card.findByIdAndRemove(cardId);
+      res.send(deletedCard);
+    } catch (err) {
       res.status(500).send({ message: err.message });
-    });
+    }
+  } else {
+    res.status(403).send('Можно удалять только свои карточки');
+  }
 };
 
 module.exports.likeCard = (req, res) => Card.findByIdAndUpdate(

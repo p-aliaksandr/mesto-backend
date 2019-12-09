@@ -1,7 +1,7 @@
 {
   "name": "sprint-12",
   "version": "1.0.0",
-  "description": "",
+  "description": "REST API the project Mesto with him integration MongoDB database",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
@@ -15,11 +15,17 @@
     "nodemon": "^1.19.4"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "escape-html": "^1.0.3",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
     "express": "^4.17.1",
+    "express-rate-limit": "^5.0.0",
+    "helmet": "^3.21.2",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.7.10",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "validator": "^12.1.0"
   }
 }
