@@ -29,9 +29,8 @@ module.exports.deleteCard = async (req, res) => {
     return;
   }
   if (String(card.owner) === _id) {
-    let deletedCard;
     try {
-      deletedCard = await Card.findByIdAndRemove(cardId);
+      const deletedCard = await Card.findByIdAndRemove(cardId);
       res.send(deletedCard);
     } catch (err) {
       res.status(500).send({ message: err.message });
