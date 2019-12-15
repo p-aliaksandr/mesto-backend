@@ -1,6 +1,8 @@
-# Mesto Backend v0.0.4
+# Mesto Backend v0.0.5
 
 - Серверная часть для проекта Mesto
+
+Ссылки: http://84.201.173.57/, http://mesto.press/.
 
 ### Функционал:
 | Запрос                                            | Ответ                                                               |
