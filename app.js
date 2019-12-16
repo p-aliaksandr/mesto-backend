@@ -7,8 +7,8 @@ const bodyParser = require('body-parser');
 const { celebrate, Joi, errors } = require('celebrate');
 const { login, createUser } = require('./controllers/users');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const { createCard } = require('./routes/cards');
-const { updateProfile, updateAvatar } = require('./routes/users');
+const { createCard } = require('./controllers/cards');
+const { updateProfile, updateAvatar } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 
 const { PORT = 3000 } = process.env;
