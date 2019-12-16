@@ -7,6 +7,8 @@ const bodyParser = require('body-parser');
 const { celebrate, Joi, errors } = require('celebrate');
 const { login, createUser } = require('./controllers/users');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { createCard } = require('./routes/cards');
+const { updateProfile, updateAvatar } = require('./routes/users');
 const auth = require('./middlewares/auth');
 
 const { PORT = 3000 } = process.env;
@@ -69,6 +71,27 @@ app.post('/signin', celebrate({
     password: Joi.string().required(),
   }),
 }), login);
+
+app.post('/cards', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30),
+    link: Joi.string().required(),
+    owner: Joi.string().required(),
+  }),
+}), createCard);
+
+app.patch('/users/me', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30),
+    about: Joi.string().required().min(2).max(30),
+  }),
+}), updateProfile);
+
+app.patch('/users/me/avatar', celebrate({
+  body: Joi.object().keys({
+    avatar: Joi.string().required(),
+  }),
+}), updateAvatar);
 
 app.use(errorLogger);
 
