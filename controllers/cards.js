@@ -12,7 +12,7 @@ module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
   const owner = req.user._id;
   Card.create({ name, link, owner })
-    .then((card) => res.send({ data: card }))
+    .then((card) => res.status(201).send({ data: card }))
     .catch(next);
 };
 
@@ -21,8 +21,11 @@ module.exports.deleteCard = (req, res, next) => {
   const { cardId } = req.params;
 
   Card.findOne({ _id: cardId })
-    .then(() => {
-      throw new NotFoundError('Карточка с таким id не найдена');
+    .then((card) => {
+      if (!card) {
+        throw new NotFoundError('Карточка с таким id не найдена');
+      }
+      return card;
     })
     .then((card) => {
       if (String(card.owner) === _id) {
@@ -41,7 +44,7 @@ module.exports.likeCard = (req, res, next) => Card.findByIdAndUpdate(
   { $addToSet: { likes: req.user._id } },
   { new: true },
 )
-  .then((like) => res.send({ data: like }))
+  .then((like) => res.status(201).send({ data: like }))
   .catch(next);
 
 module.exports.dislikeCard = (req, res, next) => Card.findByIdAndUpdate(
