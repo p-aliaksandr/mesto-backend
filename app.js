@@ -4,11 +4,8 @@ const helmet = require('helmet');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const { celebrate, Joi, errors } = require('celebrate');
-const { login, createUser } = require('./controllers/users');
+const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const { createCard } = require('./controllers/cards');
-const { updateProfile, updateAvatar } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 
 const { PORT = 3000 } = process.env;
@@ -42,9 +39,6 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-app.post('/signin', login);
-app.post('/signup', createUser);
-
 app.use(auth);
 
 app.use('/', require('./routes/users'));
@@ -54,44 +48,6 @@ app.use('*', (req, res) => {
   res.set('Content-Type', 'application/json');
   res.status(404).send('{ "message": "Запрашиваемый ресурс не найден" }');
 });
-
-app.post('/signup', celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
-    about: Joi.string().required().min(2).max(30),
-    avatar: Joi.string().required(),
-    email: Joi.string().required(),
-    password: Joi.string().required(),
-  }),
-}), createUser);
-
-app.post('/signin', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required(),
-    password: Joi.string().required(),
-  }),
-}), login);
-
-app.post('/cards', celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
-    link: Joi.string().required(),
-    owner: Joi.string().required(),
-  }),
-}), createCard);
-
-app.patch('/users/me', celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
-    about: Joi.string().required().min(2).max(30),
-  }),
-}), updateProfile);
-
-app.patch('/users/me/avatar', celebrate({
-  body: Joi.object().keys({
-    avatar: Joi.string().required(),
-  }),
-}), updateAvatar);
 
 app.use(errorLogger);
 
