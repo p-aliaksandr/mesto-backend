@@ -1,6 +1,6 @@
 const { celebrate, Joi } = require('celebrate');
 
-module.exports = celebrate({
+const signupValidation = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
     about: Joi.string().required().min(2).max(30),
@@ -10,14 +10,14 @@ module.exports = celebrate({
   }),
 });
 
-module.exports = celebrate({
+const signinValidation = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required(),
     password: Joi.string().required(),
   }),
 });
 
-module.exports = celebrate({
+const cardsValidation = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
     link: Joi.string().required(),
@@ -25,15 +25,23 @@ module.exports = celebrate({
   }),
 });
 
-module.exports = celebrate({
+const meValidation = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
     about: Joi.string().required().min(2).max(30),
   }),
 });
 
-module.exports = celebrate({
+const avatarValidation = celebrate({
   body: Joi.object().keys({
     avatar: Joi.string().required(),
   }),
 });
+
+module.exports = {
+  signupValidation,
+  signinValidation,
+  cardsValidation,
+  meValidation,
+  avatarValidation,
+};
