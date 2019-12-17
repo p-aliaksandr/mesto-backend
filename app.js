@@ -7,6 +7,10 @@ const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const auth = require('./middlewares/auth');
+const validationData = require('./validationData');
+const { login, createUser } = require('./controllers/users');
+const { createCard } = require('./controllers/cards');
+const { updateProfile, updateAvatar } = require('./controllers/users');
 
 const { PORT = 3000 } = process.env;
 
@@ -32,6 +36,13 @@ app.use(requestLogger);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.post('/signup', validationData, createUser);
+app.post('/signin', validationData, login);
+app.post('/cards', validationData, createCard);
+app.patch('/users/me', validationData, updateProfile);
+app.patch('/users/me/avatar', validationData, updateAvatar);
+
 
 app.get('/crash-test', () => {
   setTimeout(() => {
