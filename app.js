@@ -38,13 +38,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/signup', signupValidation, createUser);
 app.post('/signin', signinValidation, login);
 
-
-app.get('/crash-test', () => {
-  setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
-  }, 0);
-});
-
 app.use(auth);
 
 app.use('/', require('./routes/users'));
